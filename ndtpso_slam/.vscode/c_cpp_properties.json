@@ -1,0 +1,62 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/hmcl/fast_ws/devel/include/**",
+        "/home/hmcl/msf_ws/devel/include/**",
+        "/home/hmcl/mavros_ws/devel/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/devel/include/**",
+        "/home/hmcl/data/mbplanner_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/bspline/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/bspline_opt/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/misc/eigen_checks/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/exploration/mbplanner_ros/global_planner/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/hector_mapping/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/hmcl_fsm/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/exploration/mbplanner_ros/kdtree/include/**",
+        "/home/hmcl/ndtpso_slam_ws/src/laser_geometry/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/libmavconn/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/map_follower/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/mav_comm/mav_msgs/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/mav_comm/mav_planning_msgs/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/mavros/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/mavros_msgs/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/exploration/mbplanner_ros/mbplanner/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/misc/minkindr/minkindr/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/misc/minkindr_ros/minkindr_conversions/include/**",
+        "/home/hmcl/msf_ws/src/ethzasl_msf/msf_core/include/**",
+        "/home/hmcl/msf_ws/src/ethzasl_msf/msf_timing/include/**",
+        "/home/hmcl/msf_ws/src/ethzasl_msf/msf_updates/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Utils/multi_map_server/include/**",
+        "/home/hmcl/ndtpso_slam_ws/src/ndtpso_slam/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/mapping/volumetric_mapping/octomap_world/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/offboard_ctrl/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/path_searching/include/**",
+        "/home/hmcl/data/mbplanner_ws/src/mbplanner_hmcl/exploration/pci_mav/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/plan_env/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/plan_manage/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/exploration/mbplanner_ros/planner_common/include/**",
+        "/home/hmcl/data/mbplanner_ws/src/mbplanner_hmcl/exploration/mbplanner_ros/planner_control_interface/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/poly_traj/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/pose_fuse/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Utils/pose_utils/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Utils/quadrotor_msgs/include/**",
+        "/home/hmcl/mavros_ws/src/mavros_pkg/mavros/test_mavros/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Fast-Planner/fast_planner/traj_utils/include/**",
+        "/home/hmcl/fast_ws/src/mav_local_planner/Utils/uav_utils/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/mapping/volumetric_mapping/volumetric_map_base/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/mapping/voxblox/voxblox/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/mapping/voxblox/voxblox_ros/include/**",
+        "/home/hmcl/hmcl_mbplanner_ws/src/mbplanner_hmcl/mapping/voxblox/voxblox_rviz_plugin/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

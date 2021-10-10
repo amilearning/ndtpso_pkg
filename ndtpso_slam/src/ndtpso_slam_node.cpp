@@ -1,5 +1,6 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "nav_msgs/Odometry.h"
+#include "sensor_msgs/Imu.h"
 #include "ndtpso_slam/ndtcell.h"
 #include "ndtpso_slam/ndtframe.h"
 #include "ros/ros.h"
@@ -15,6 +16,8 @@
 #include <mutex>
 #include <string>
 #include <tf/transform_listener.h>
+
+
 
 #define NDTPSO_SLAM_VERSION "1.5.0"
 
@@ -69,6 +72,14 @@ static NDTFrame *global_map;
 static ros::Publisher pose_pub;
 static geometry_msgs::PoseStamped current_pub_pose;
 
+// void imu_callback(const sensor_msgs::ImuConstPtr &imu_data){
+
+//  tf::Quaternion q_imu(imu_data->orientation.x,imu_data->orientation.y,imu_data->orientation.z,imu_data->orientation.w);
+//     tf::Matrix3x3 m_imu(q_imu);            
+//     double roll_imu, pitch_imu, yaw_imu;
+//     m_imu.getRPY(roll_imu, pitch_imu, yaw_imu);  
+// }
+  
 // The odometry is used just for the initial pose to be easily compared with our
 // calculated pose
 void scan_mathcher(const sensor_msgs::LaserScanConstPtr &scan
@@ -85,7 +96,7 @@ void scan_mathcher(const sensor_msgs::LaserScanConstPtr &scan
 
 #if SYNC_WITH_ODOM
                    ,
-                   const nav_msgs::OdometryConstPtr &odom
+                   const sensor_msgs::ImuConstPtr &odom
 #endif
 ) {
 
@@ -95,26 +106,37 @@ void scan_mathcher(const sensor_msgs::LaserScanConstPtr &scan
   matcher_mutex.lock();
   auto start = std::chrono::high_resolution_clock::now();
   last_call_time = start;
-
-  current_frame->loadLaser(scan->ranges, scan->angle_min, scan->angle_increment,
-                           scan->range_max);
-
+double odom_roll, odom_pitch, odom_orientation; 
+odom_roll = 0.0;
+odom_pitch = 0.0;
+odom_orientation = 0.0;
 #if SYNC_WITH_ODOM
-  double _, odom_orientation;
-  tf::Matrix3x3(tf::Quaternion(odom->pose.pose.orientation.x,
-                               odom->pose.pose.orientation.y,
-                               odom->pose.pose.orientation.z,
-                               odom->pose.pose.orientation.w))
-      .getRPY(_, _, odom_orientation);
+  
+  tf::Matrix3x3(tf::Quaternion(odom->orientation.x,
+                               odom->orientation.y,
+                               odom->orientation.z,
+                               odom->orientation.w))
+      .getRPY(odom_roll, odom_pitch, odom_orientation);
+  
+  sensor_msgs::LaserScan filtered_scan;
+  filtered_scan.ranges = scan->ranges;
+
+  for(int i=0; i< scan->ranges.size();i++){
+    filtered_scan.ranges[i] = scan->ranges[i]*cos(odom_roll)*cos(odom_pitch);    
+  }
 #endif
+#if SYNC_WITH_ODOM
+  current_frame->loadLaser(filtered_scan.ranges, scan->angle_min, scan->angle_increment,
+                           scan->range_max);
+#else
+current_frame->loadLaser(scan->ranges, scan->angle_min, scan->angle_increment,
+                           scan->range_max);                         
+#endif
+
+
 
   if (first_iteration) {
-#if SYNC_WITH_ODOM
-    current_pose << odom->pose.pose.position.x, odom->pose.pose.position.y,
-        odom_orientation;
-    previous_pose << odom->pose.pose.position.x, odom->pose.pose.position.y,
-        odom_orientation;
-#endif
+
     current_pose = previous_pose;
     start_time = std::chrono::high_resolution_clock::now();
     ROS_INFO("Min/Max ranges: %.2f/%.2f", static_cast<double>(scan->range_min),
@@ -133,11 +155,7 @@ void scan_mathcher(const sensor_msgs::LaserScanConstPtr &scan
     global_map->update(current_pose, current_frame);
   iter_num = (iter_num + 1) % SAVE_DATA_TO_FILE_EACH_NUM_ITERS;
   global_map->addPose(scan->header.stamp.toSec(), current_pose
-#if SYNC_WITH_ODOM
-                      ,
-                      Vector3d(odom->pose.pose.position.x,
-                               odom->pose.pose.position.y, odom_orientation)
-#endif
+
   );
 #endif
 
@@ -330,7 +348,7 @@ int main(int argc, char **argv)
 #endif
 #if SYNC_WITH_ODOM
                                                           ,
-                                                          nav_msgs::Odometry
+                                                          sensor_msgs::Imu
 #endif
                                                           >
       ApproxSyncPolicy;
@@ -342,7 +360,9 @@ int main(int argc, char **argv)
       nh, param_sync_topic, 10);
 #endif
 #if SYNC_WITH_ODOM
-  message_filters::Subscriber<nav_msgs::Odometry> odom_sub(nh, param_odom_topic,
+  // message_filters::Subscriber<nav_msgs::Odometry> odom_sub(nh, param_odom_topic,
+  //                                                          10);
+  message_filters::Subscriber<sensor_msgs::Imu> odom_sub(nh, param_odom_topic,
                                                            10);
 #endif
 
@@ -367,6 +387,8 @@ int main(int argc, char **argv)
 #else
   ros::Subscriber laser_sub =
       nh.subscribe<sensor_msgs::LaserScan>(param_scan_topic, 1, &scan_mathcher);
+  // ros::Subscriber imu_sub =
+  //     nh.subscribe<sensor_msgs::Imu>("mavros/imu/data", 1, &imu_callback);
 #endif
 
   ROS_INFO("NDTPSO node started successfuly");
